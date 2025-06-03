@@ -1,0 +1,26 @@
+ClusterIP Service: 
+1. With dry-run: (only create yaml with exposer )
+# kubectl expose pod test-app --name=test-app-clusterip-service --port=80 --target-port=80 --type=ClusterIP --dry-run=client -o yaml > service-clusterip.yaml
+# kubectl apply -f service-clusterip.yaml
+2. With out dry-run: (create yaml + apply service)
+# kubectl expose pod test-app --name=test-app-clusterip-service --port=80 --target-port=80 --type=ClusterIP -o yaml > service-clusterip.yaml
+
+output:
+# kubectl get service
+# kubectl delete svc my-custom-service
+-----------------------------------------------------------------------------------------------------------
+Creating a NodePort Service with Fixed Port
+
+# kubectl expose pod test-app --name=test-app-nodeport-service --port=80 --target-port=80 --type=NodePort --dry-run=client -o yaml > service-nodeport.yaml
+By default and for convenience, the Kubernetes control plane will allocate a
+port from a range (default: 30000-32767)
+apply in yaml file:-       nodePort: 31000  # Under ports section
+# kubectl apply -f service-nodeport.yaml
+
+------------------------------------------------------------------------------------------------------------
+Creating a LoadBalancer
+
+# kubectl expose pod test-app --name=test-app-loadbalancer-service --port=8080 --target-port=80 --type=LoadBalancer --dry-run=client -o yaml > service-loadbalancer.yaml
+# kubectl apply -f service-loadbalancer.yaml
+# kubectl patch svc test-app-loadbalancer-service -p '{"spec":{"externalIPs":["192.168.219.111"]}}'
+
