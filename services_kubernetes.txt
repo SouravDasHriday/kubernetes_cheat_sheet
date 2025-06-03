@@ -1,5 +1,5 @@
 ClusterIP Service: 
-1. With dry-run: (only create yaml with exposer )
+1. With dry-run: (only create yaml with exposer)
 # kubectl expose pod test-app --name=test-app-clusterip-service --port=80 --target-port=80 --type=ClusterIP --dry-run=client -o yaml > service-clusterip.yaml
 # kubectl apply -f service-clusterip.yaml
 2. With out dry-run: (create yaml + apply service)
