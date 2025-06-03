@@ -1,0 +1,83 @@
+----------------------------------------------------------
+create a pod:
+kubectl run web-pod --image=nginx:latest
+----------------------------------------------------------
+basic yaml file:(nginx.yaml)
+---------------------------------------------------------
+apiVersion: v1        # Kubernetes API version
+kind: Pod             # Resource type
+metadata:             # Identification
+  name: web-pod       # Unique name
+  labels:             # Key-value tags
+    app: frontend     
+spec:                 # Desired state
+  containers:         # List of containers
+  - name: nginx       # Container name
+    image: nginx:latest # Container image
+    ports:
+    - containerPort: 80 # Exposed port
+-----------------------------------------------------------
+Declarative approach with yaml file:
+kubectl apply -f nginx.yaml
+-----------------------------------------------------------
+view pods:
+kubectl get pods
+kubectl get pods -o wide  # Show more details
+kubectl describe pod web-pod # pod details
+-----------------------------------------------------------
+Interacting with Pods:
+kubectl exec web-pod -- nginx -v # Execute command in Pod
+kubectl exec web-pod -- /bin/bash # Execute command in Pod bash
+kubectl exec -it web-pod -- sh # Interactive shell
+kubectl cp web-pod:/etc/nginx/nginx.conf ./nginx.conf # Copy files
+----------------------------------------------------------------------------
+Troubleshooting example:
+kubectl logs web-pod # Check logs
+kubectl exec -it web-pod -- curl localhost:80 # Debug networking
+-----------------------------------------------------------------------------
+ReplicaSet YAML:
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: web-rs
+spec:
+  replicas: 3          # Desired number of Pods
+  selector:            # How to identify Pods to manage
+    matchLabels:
+      app: web
+  template:            # Pod template
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.19
+-------------------------------------------------------------
+kubectl apply -f replicaset.yaml
+kubectl scale rs web-rs --replicas=5 #scalling replicaSet
+inspect:
+kubectl get rs
+kubectl describe rs web-rs
+---------------------------------------------------------------------------------------------------------
+Recpica with dry-run:
+# kubectl create rs my-replicaset --image=nginx --replicas=3 --dry-run=client -o yaml > replicaset.yaml
+# kubectl apply -f replicaset.yaml
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
